@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,15 +34,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.appli_film.components.ImageScroll
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
+
+//data class ImageWithText(val painter: Painter, val text: String)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
         var textState by remember { mutableStateOf(TextFieldValue("")) }
         Column(
             modifier = modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Box(
                 Modifier
@@ -67,13 +67,16 @@ class MainActivity : ComponentActivity() {
             ) {
                 Row(
                     modifier = modifier
-                        .fillMaxHeight(),
+                        .fillMaxHeight()
+                        .background(Color(0xFF320A28))
+                        .padding(start = 12.dp, end = 12.dp),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Accueil",
-                        color = Color.White
+                        color = Color(0xFFE0D68A)
+
                     )
                     Spacer(modifier = Modifier.width(100.dp))
                     BasicTextField(
@@ -81,7 +84,7 @@ class MainActivity : ComponentActivity() {
                         onValueChange = { textState = it },
                         modifier = Modifier
                             .weight(1f)
-                            .background(Color.LightGray, RoundedCornerShape(8.dp))
+                            .background(Color(0xFFE0D68A), RoundedCornerShape(8.dp))
                             .padding(vertical = 12.dp, horizontal = 16.dp)
                             .height(20.dp),
                         decorationBox = { innerTextField ->
@@ -123,39 +126,11 @@ class MainActivity : ComponentActivity() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(start = 12.dp, end = 12.dp),
                 ) {
                     Text(
                         text = "Romance",
-                        color = Color.White
-                    )
-                    Row(
-                        modifier = Modifier
-                            .height(130.dp)
-                            .fillMaxWidth()                      ,
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        LazyRow(
-                            modifier = Modifier
-                                .padding(top = 12.dp)
-                        ) {
-                            items(car1) { image ->
-                                Image(
-                                    painter = image,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp)
-                                        .fillMaxHeight()
-                                        .width(130.dp)
-                                        .clip(RoundedCornerShape(14.dp)),
-                                    contentScale = ContentScale.Crop
-                                )
-                            }
-                        }
-                    }
-                    Text(
-                        text = "Thrillers",
-                        color = Color.White
+                        color = Color(0xFFE0D68A)
                     )
                     Row(
                         modifier = Modifier
@@ -168,23 +143,40 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(top = 12.dp)
                         ) {
-                            items(car1) { image ->
-                                Image(
-                                    painter = image,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp)
-                                        .fillMaxHeight()
-                                        .width(130.dp)
-                                        .clip(RoundedCornerShape(14.dp)),
-                                    contentScale = ContentScale.Crop
-                                )
+                            items(car1) { painter ->
+                                ImageScroll(painter = painter, text = "Wolverine")
                             }
                         }
                     }
+                    Spacer(
+                        modifier = Modifier.height(30.dp)
+
+                    )
+
+                    Text(
+                        text = "Thriller",
+                        color = Color(0xFFE0D68A)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .height(130.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        LazyRow(
+                            modifier = Modifier
+                                .padding(top = 12.dp)
+                        ) {
+                            items(car1) { painter ->
+                                ImageScroll(painter = painter, text = "Superman")
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(30.dp))
                     Text(
                         text = "Action",
-                        color = Color.White
+                        color = Color(0xFFE0D68A)
                     )
                     Row(
                         modifier = Modifier
@@ -197,23 +189,15 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(top = 12.dp)
                         ) {
-                            items(car1) { image ->
-                                Image(
-                                    painter = image,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp)
-                                        .fillMaxHeight()
-                                        .width(130.dp)
-                                        .clip(RoundedCornerShape(14.dp)),
-                                    contentScale = ContentScale.Crop
-                                )
+                            items(car1) { painter ->
+                                ImageScroll(painter = painter, text = "Batman")
                             }
                         }
                     }
+                    Spacer(modifier = Modifier.height(30.dp))
                     Text(
                         text = "Fantastique",
-                        color = Color.White
+                        color = Color(0xFFE0D68A)
                     )
                     Row(
                         modifier = Modifier
@@ -226,46 +210,8 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(top = 12.dp)
                         ) {
-                            items(car1) { image ->
-                                Image(
-                                    painter = image,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp)
-                                        .fillMaxHeight()
-                                        .width(130.dp)
-                                        .clip(RoundedCornerShape(14.dp)),
-                                    contentScale = ContentScale.Crop
-                                )
-                            }
-                        }
-                    }
-                    Text(
-                        text = "Psychologique",
-                        color = Color.White
-                    )
-                    Row(
-                        modifier = Modifier
-                            .height(130.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        LazyRow(
-                            modifier = Modifier
-                                .padding(top = 12.dp)
-                        ) {
-                            items(car1) { image ->
-                                Image(
-                                    painter = image,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp)
-                                        .fillMaxHeight()
-                                        .width(130.dp)
-                                        .clip(RoundedCornerShape(14.dp)),
-                                    contentScale = ContentScale.Crop
-                                )
+                            items(car1) { painter ->
+                                ImageScroll(painter = painter, text = "Hulk")
                             }
                         }
                     }
@@ -294,7 +240,6 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .fillMaxWidth()
-                                .padding(start = 12.dp)
                         ) {
                             Box(
                                 Modifier
