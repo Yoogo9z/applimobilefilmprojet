@@ -28,7 +28,6 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -228,10 +227,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun Scaffold(topBar: () -> Unit) {
-
-    }
-
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Preview(showBackground = true, showSystemUi = true)
     @Composable
@@ -240,18 +235,11 @@ class MainActivity : ComponentActivity() {
             Scaffold(
                 bottomBar = {
                     BottomAppBar {
-                        Column(
+                        Row(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(Color(0xFF511730))
-                        )
-                        {
-                            Spacer(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(2.dp)
-                                    .background(Color.White)
-                            )
+                        ) {
                         }
                     }
                 },

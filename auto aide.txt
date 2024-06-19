@@ -1,2 +1,9 @@
 
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(2.dp)
+                                    .background(Color.White)
+                            )
