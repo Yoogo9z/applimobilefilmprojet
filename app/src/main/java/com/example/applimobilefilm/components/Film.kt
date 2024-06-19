@@ -1,4 +1,4 @@
-package com.example.appli_film.components
+package com.example.applimobilefilm
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

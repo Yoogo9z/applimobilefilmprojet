@@ -24,9 +24,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,19 +38,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.appli_film.components.ImageScroll
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
-
 //data class ImageWithText(val painter: Painter, val text: String)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        window.navigationBarColor = Color.Black.toArgb()
+        window.statusBarColor = Color.Black.toArgb()
         setContent {
             MoviePreview()
         }
@@ -94,12 +98,12 @@ class MainActivity : ComponentActivity() {
                                         Icons.Filled.Search,
                                         contentDescription = "Search Icon",
                                         modifier = Modifier.size(16.dp),
-                                        tint = Color.Gray
+                                        tint = Color.Black.copy(alpha = 0.6f)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
                                         text = "Rechercher un film",
-                                        color = Color.Gray
+                                        color = Color.Black.copy(alpha = 0.6f)
                                     )
                                 }
                             } else {
@@ -128,6 +132,10 @@ class MainActivity : ComponentActivity() {
                         .fillMaxWidth()
                         .padding(start = 12.dp, end = 12.dp),
                 ) {
+                    Spacer(
+                        modifier = Modifier
+                            .height(30.dp)
+                    )
                     Text(
                         text = "Romance",
                         color = Color(0xFFE0D68A)
@@ -220,12 +228,34 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun Scaffold(topBar: () -> Unit) {
+
+    }
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @Preview(showBackground = true)
+    @Preview(showBackground = true, showSystemUi = true)
     @Composable
     fun MoviePreview() {
         ApplimobilefilmTheme {
-            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            Scaffold(
+                bottomBar = {
+                    BottomAppBar {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color(0xFF511730))
+                        )
+                        {
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(2.dp)
+                                    .background(Color.White)
+                            )
+                        }
+                    }
+                },
+                modifier = Modifier.fillMaxSize()) { innerPadding ->
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
