@@ -1,11 +1,12 @@
+package com.example.applimobilefilm
+
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,17 +16,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.applimobilefilm.GestionActivity
-import com.example.applimobilefilm.ImageScroll
-import com.example.applimobilefilm.R
+import androidx.compose.ui.unit.sp
 import com.example.applimobilefilm.components.BottomBar
 import com.example.applimobilefilm.components.SearchBarWithIcon
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
@@ -36,14 +38,78 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         setContent {
-            MoviePreview()
+            ApplimobilefilmTheme {
+                Scaffold(
+                    bottomBar = {
+                        BottomBar(onHomeClick = {
+                            val intent = Intent(this@MainActivity, MainActivity::class.java)
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(intent)
+                        }, onStarClick = {
+                            val intent = Intent(this@MainActivity, GestionActivity::class.java)
+                            startActivity(intent)
+                        }, onInfoClick = {
+                            // Handle Info click
+                        })
+                    },
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    MoviePreviewContent()
+                }
+            }
         }
     }
 
     @Composable
-    fun ListContent(car1: List<Int>, modifier: Modifier = Modifier, navigateToGestion: () -> Unit) {
+    fun MoviePreviewContent() {
+        val movieSuggestions = listOf(
+            "Titanic", "Avatar", "Inception", "The Dark Knight", "Interstellar",
+            "La La Land", "Pulp Fiction", "Fight Club", "The Matrix"
+        )
+
+        var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
+
         Column(
-            modifier = modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1.5f)
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .background(Color(0xFF511730))
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    SearchBarWithIcon(
+                        modifier = Modifier.fillMaxWidth(),
+                        suggestions = filteredSuggestions,
+                        onSearchTextChanged = { searchText ->
+                            filteredSuggestions = movieSuggestions
+                                .filter { it.contains(searchText, ignoreCase = true) }
+                        }
+                    )
+                    Spacer(modifier = Modifier.weight(0.1f))
+                    ListContent(
+                        car1 = listOf(
+                            R.drawable.image1,
+                            R.drawable.image2,
+                            R.drawable.image3,
+                            R.drawable.car1
+                        ),
+                        modifier = Modifier.weight(8.4f)
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun ListContent(car1: List<Int>, modifier: Modifier = Modifier) {
+        Column(
+            modifier = modifier.fillMaxSize()
         ) {
             Box(
                 Modifier
@@ -53,19 +119,23 @@ class MainActivity : AppCompatActivity() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 12.dp, end = 12.dp),
+                        .padding(start = 12.dp, end = 12.dp)
                 ) {
-                    Spacer(
-                        modifier = Modifier.height(30.dp)
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        modifier = Modifier
+                            .padding(bottom = 20.dp)
+                            .align(Alignment.CenterHorizontally),
+                        style = androidx.compose.ui.text.TextStyle(fontSize = 24.sp),
+                        text = "Films à venir",
+                        color = Color(0xFFE0D68A)
                     )
                     Text(
                         text = "Romance",
                         color = Color(0xFFE0D68A)
                     )
                     Row(
-                        modifier = Modifier
-                            .height(130.dp)
-                            .fillMaxWidth()
+                        modifier = Modifier.height(130.dp)
                     ) {
                         LazyRow(
                             modifier = Modifier.padding(top = 12.dp)
@@ -75,17 +145,13 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    Spacer(
-                        modifier = Modifier.height(30.dp)
-                    )
+                    Spacer(modifier = Modifier.height(25.dp))
                     Text(
                         text = "Thriller",
                         color = Color(0xFFE0D68A)
                     )
                     Row(
-                        modifier = Modifier
-                            .height(130.dp)
-                            .fillMaxWidth()
+                        modifier = Modifier.height(130.dp)
                     ) {
                         LazyRow(
                             modifier = Modifier.padding(top = 12.dp)
@@ -95,84 +161,36 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(30.dp))
+                    Spacer(modifier = Modifier.height(25.dp))
                     Text(
-                        text = "Action",
+                        text = "Thriller",
                         color = Color(0xFFE0D68A)
                     )
                     Row(
-                        modifier = Modifier
-                            .height(130.dp)
-                            .fillMaxWidth()
+                        modifier = Modifier.height(130.dp)
                     ) {
                         LazyRow(
                             modifier = Modifier.padding(top = 12.dp)
                         ) {
                             items(car1) { painter ->
-                                ImageScroll(painter = painterResource(painter), text = "Batman")
+                                ImageScroll(painter = painterResource(painter), text = "Superman")
                             }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.height(30.dp))
-            }
-        }
-    }
-
-    @Composable
-    fun MoviePreview() {
-        ApplimobilefilmTheme {
-            Scaffold(
-                bottomBar = {
-                    BottomBar(
-                        onHomeClick = {
-                            // Ne rien faire ici car on est déjà dans MainActivity
-                        },
-                        onStarClick = {
-                            // Utiliser l'intent pour naviguer vers GestionActivity
-                            startActivity(Intent(this@MainActivity, GestionActivity::class.java))
-                        },
-                        onInfoClick = {
-                            // Handle Info click if needed
-                        }
+                    Spacer(modifier = Modifier.height(25.dp))
+                    Text(
+                        text = "Thriller",
+                        color = Color(0xFFE0D68A)
                     )
-                },
-                modifier = Modifier.fillMaxSize()
-            ) { innerPadding ->
-                Column(
-                    modifier = Modifier.padding(innerPadding)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0xFF511730))
+                    Row(
+                        modifier = Modifier.height(130.dp)
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth()
+                        LazyRow(
+                            modifier = Modifier.padding(top = 12.dp)
                         ) {
-                            Box(
-                                Modifier
-                                    .weight(1.5f)
-                                    .fillMaxHeight()
-                                    .fillMaxWidth()
-                            ) {
-                                SearchBarWithIcon()
+                            items(car1) { painter ->
+                                ImageScroll(painter = painterResource(painter), text = "Superman")
                             }
-                            Spacer(modifier = Modifier.weight(0.1f))
-                            ListContent(
-                                car1 = listOf(
-                                    R.drawable.image1,
-                                    R.drawable.image2,
-                                    R.drawable.image3,
-                                    R.drawable.car1
-                                ),
-                                modifier = Modifier.weight(8.4f),
-                                navigateToGestion = {
-                                    startActivity(Intent(this@MainActivity, GestionActivity::class.java))
-                                }
-                            )
                         }
                     }
                 }
@@ -180,9 +198,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @Preview(showBackground = true, showSystemUi = true)
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
-    fun MoviePreviewPreview() {
-        MoviePreview()
+    @Preview(showBackground = true, showSystemUi = true)
+    fun MoviePreview() {
+        MoviePreviewContent()
     }
 }

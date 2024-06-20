@@ -1,6 +1,7 @@
 package com.example.applimobilefilm.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -28,7 +31,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SearchBarWithIcon(modifier: Modifier = Modifier) {
+fun SearchBarWithIcon(
+    modifier: Modifier = Modifier,
+    suggestions: List<String> = emptyList(),
+    onSearchTextChanged: (String) -> Unit
+
+) {
     var textState by remember { mutableStateOf("") }
 
     Column(
@@ -51,7 +59,10 @@ fun SearchBarWithIcon(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.width(100.dp))
                 BasicTextField(
                     value = textState,
-                    onValueChange = { textState = it },
+                    onValueChange = {
+                        textState = it
+                        onSearchTextChanged(it)
+                                    },
                     modifier = Modifier
                         .weight(1f)
                         .background(Color(0xFFE0D68A), RoundedCornerShape(8.dp))
@@ -78,6 +89,24 @@ fun SearchBarWithIcon(modifier: Modifier = Modifier) {
                     }
                 )
             }
+        }
+    }
+
+
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(suggestions) { suggestion ->
+            Text(
+                text = suggestion,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                    .clickable {
+                        // Action à effectuer lorsqu'une suggestion est sélectionnée
+                        // Par exemple : naviguer vers les détails du film associé à la suggestion
+                    }
+            )
         }
     }
 }

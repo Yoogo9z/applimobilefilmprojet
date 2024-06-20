@@ -7,3 +7,26 @@
                                     .height(2.dp)
                                     .background(Color.White)
                             )
+
+Boucle for
+
+@Composable
+fun ListContent(car1: List<Int>, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        val genres = listOf("Romance", "Thriller", "Comédie") // Exemple de genres
+
+        for (genre in genres) {
+            Spacer(modifier = Modifier.height(25.dp))
+            Text(text = genre, color = Color(0xFFE0D68A))
+            Row(modifier = Modifier.height(130.dp)) {
+                LazyRow(modifier = Modifier.padding(top = 12.dp)) {
+                    items(car1) { painter ->
+                        ImageScroll(painter = painterResource(painter), text = "Titre du film")
+                    }
+                }
+            }
+        }
+    }
+}
