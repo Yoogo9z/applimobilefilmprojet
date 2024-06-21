@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+//import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import com.example.applimobilefilm.components.SearchBarWithIcon
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
 
 class MainActivity : AppCompatActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,7 +52,6 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(this@MainActivity, GestionActivity::class.java)
                             startActivity(intent)
                         }, onInfoClick = {
-                            // Handle Info click
                         })
                     },
                     modifier = Modifier.fillMaxSize()
@@ -65,8 +66,7 @@ class MainActivity : AppCompatActivity() {
     fun MoviePreviewContent() {
         val movieSuggestions = listOf(
             "Titanic", "Avatar", "Inception", "The Dark Knight", "Interstellar",
-            "La La Land", "Pulp Fiction", "Fight Club", "The Matrix"
-        )
+            "La La Land", "Pulp Fiction", "Fight Club", "The Matrix")
 
         var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
 
@@ -84,7 +84,10 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     SearchBarWithIcon(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1.5f)
+                        ,
                         suggestions = filteredSuggestions,
                         onSearchTextChanged = { searchText ->
                             filteredSuggestions = movieSuggestions
@@ -163,23 +166,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     Spacer(modifier = Modifier.height(25.dp))
                     Text(
-                        text = "Thriller",
-                        color = Color(0xFFE0D68A)
-                    )
-                    Row(
-                        modifier = Modifier.height(130.dp)
-                    ) {
-                        LazyRow(
-                            modifier = Modifier.padding(top = 12.dp)
-                        ) {
-                            items(car1) { painter ->
-                                ImageScroll(painter = painterResource(painter), text = "Superman")
-                            }
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(25.dp))
-                    Text(
-                        text = "Thriller",
+                        text = "Fantastique",
                         color = Color(0xFFE0D68A)
                     )
                     Row(
@@ -200,7 +187,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
-    @Preview(showBackground = true, showSystemUi = true)
+    @Preview(showBackground = true)
     fun MoviePreview() {
         MoviePreviewContent()
     }
