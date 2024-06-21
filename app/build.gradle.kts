@@ -70,6 +70,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.converter.gson)
+
+    // define a BOM and its version
+    implementation(platform(libs.okhttp.bom))
+    // define any required OkHttp artifacts without version
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
 }

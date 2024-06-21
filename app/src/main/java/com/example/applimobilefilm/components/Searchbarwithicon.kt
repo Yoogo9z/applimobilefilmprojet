@@ -28,7 +28,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun SearchBarWithIcon(
@@ -62,7 +65,7 @@ fun SearchBarWithIcon(
                     onValueChange = {
                         textState = it
                         onSearchTextChanged(it)
-                                    },
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .background(Color(0xFFE0D68A), RoundedCornerShape(8.dp))
@@ -105,7 +108,14 @@ fun SearchBarWithIcon(
                     .clickable {
                         // Action à effectuer lorsqu'une suggestion est sélectionnée
                         // Par exemple : naviguer vers les détails du film associé à la suggestion
-                    }
+                    },
+                style = TextStyle(
+                    color = Color.White, // Change the color here
+                    fontSize = 18.sp,
+                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                    letterSpacing = 1.sp
+                ),
+                textAlign = TextAlign.Center // Change the alignment here
             )
         }
     }

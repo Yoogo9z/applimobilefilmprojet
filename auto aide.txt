@@ -1,13 +1,3 @@
-
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
-
-                            Spacer(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(2.dp)
-                                    .background(Color.White)
-                            )
-
 Boucle for
 
 @Composable
@@ -30,3 +20,12 @@ fun ListContent(car1: List<Int>, modifier: Modifier = Modifier) {
         }
     }
 }
+
+
+A faire :
+- Lier une api pour recup json de film
+- Ajouter des films aux favoris 
+- Organiser la liste de favoris selon un critère
+- Créer la page détails
+- Naviguer entre les pages avec les boutons
+ 
