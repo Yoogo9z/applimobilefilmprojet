@@ -1,5 +1,7 @@
 [versions]
 agp = "8.4.0"
+androidxNavigationCompose = "2.5.3"
+androidxNavigationComposeVersion = "2.5.0-alpha01"
 converterGson = "2.9.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -18,6 +20,9 @@ navigationCompose = "2.7.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-navigation-compose-v250alpha01 = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigationComposeVersion" }
+androidx-navigation-compose-v253 = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigationCompose" }
+androidx-navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidxNavigationComposeVersion" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

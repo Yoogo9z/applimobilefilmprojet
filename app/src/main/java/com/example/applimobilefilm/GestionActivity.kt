@@ -1,5 +1,6 @@
 package com.example.applimobilefilm
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,24 +23,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.applimobilefilm.components.BottomBar
-import com.example.applimobilefilm.components.FavorisPage
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
 
 class GestionActivity : AppCompatActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent{
-            FavorisPage()
+        setContent {
+            ApplimobilefilmTheme {
+                val navController = rememberNavController()
+                Scaffold(
+                    bottomBar = {
+                        BottomBar(
+                            navController = navController,
+                            onHomeClick = { navController.navigate("home") },
+                            onStarClick = { navController.navigate("favoris") },
+                            onInfoClick = { /* Handle Info click */ }
+                        )
+                    },
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    NavHost(navController, startDestination = "favoris") {
+                        composable("favoris") {
+                        }
+                    }
+                }
+            }
         }
-//        View(R.layout.activity_gestion)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
     }
 }
 
@@ -52,6 +67,7 @@ fun Favoris(modifier: Modifier = Modifier) {
             Modifier
                 .fillMaxWidth()
                 .weight(10f)
+                .background(Color(0xFF511730))
         ) {
             Column(
                 modifier = Modifier
@@ -162,50 +178,54 @@ fun Favoris(modifier: Modifier = Modifier) {
                         .fillMaxWidth()
                         .background(color = Color.White)
                 )
+                Text(
+                    modifier = Modifier
+                        .padding(top = 20.dp, bottom = 20.dp),
+                    text = "Taxi 2",
+                    color = Color(0xFFE0D68A)
+                )
+                Spacer(
+                    modifier = Modifier
+                        .height(1.dp)
+                        .fillMaxWidth()
+                        .background(color = Color.White)
+                )
             }
         }
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MoviePreviewContent(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
-//    val context = LocalContext.current
+fun MoviePreviewContentFav(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
+    val navController = rememberNavController()
     ApplimobilefilmTheme {
         Scaffold(
             bottomBar = {
                 BottomBar(
+                    navController = rememberNavController(),
                     onHomeClick = onHomeClick,
                     onStarClick = onStarClick,
-                    onInfoClick = { /* Handle Info click */ },
-                    navController = rememberNavController()
+                    onInfoClick = {  }
                 )
             },
             modifier = Modifier.fillMaxSize()
-        ) { innerPadding ->
+        ) {
             Column(
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFF511730))
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth()
-                    ) {
-                        Favoris(modifier = Modifier.weight(8.4f))
-                    }
-                }
+                Favoris(modifier = Modifier.weight(8.4f))
             }
         }
     }
 }
 
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MoviePreview() {
-    MoviePreviewContent(onHomeClick = { /*TODO*/ }) {
+    MoviePreviewContentFav(onHomeClick = { /*TODO*/ }) {
     }
 }

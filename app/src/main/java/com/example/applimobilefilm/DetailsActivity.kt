@@ -40,8 +40,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.applimobilefilm.components.BottomBar
 import com.example.applimobilefilm.components.DetailsPage
@@ -54,11 +52,6 @@ class DetailsActivity : AppCompatActivity() {
         setContent {
             DetailsPage()
         }
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
     }
 }
 
@@ -206,13 +199,13 @@ fun ButtonBandeAnnonce(context: Context, modifier: Modifier) {
         },
         modifier = Modifier
             .padding(top = 25.dp),
-                colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                    contentColor = Color(0xFF3D1752),
-    ),      elevation = ButtonDefaults.buttonElevation(
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White,
+            contentColor = Color(0xFF3D1752),
+        ), elevation = ButtonDefaults.buttonElevation(
             hoveredElevation = 10.dp, // Elevation when the button is hovered
         )
-    ){
+    ) {
         Text(text = "Voir la bande annonce")
     }
 }
