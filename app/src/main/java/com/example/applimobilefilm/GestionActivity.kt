@@ -48,10 +48,7 @@ class GestionActivity : AppCompatActivity() {
                     },
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    NavHost(navController, startDestination = "favoris") {
-                        composable("favoris") {
-                        }
-                    }
+                    Favoris(Modifier.fillMaxSize())
                 }
             }
         }
@@ -59,7 +56,7 @@ class GestionActivity : AppCompatActivity() {
 }
 
 @Composable
-fun Favoris(modifier: Modifier = Modifier) {
+fun Favoris(modifier: Modifier) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -194,6 +191,7 @@ fun Favoris(modifier: Modifier = Modifier) {
         }
     }
 }
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

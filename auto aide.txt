@@ -22,6 +22,19 @@ fun ListContent(car1: List<Int>, modifier: Modifier = Modifier) {
 }
 
 
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                    ) {
+                        Favoris(modifier = Modifier.weight(8.4f))
+                    }
+                }
+
+
+
+
 A faire :
 - Lier une api pour recup json de film
 - Ajouter des films aux favoris 

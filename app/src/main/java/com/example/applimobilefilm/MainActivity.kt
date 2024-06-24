@@ -1,6 +1,5 @@
 package com.example.applimobilefilm
 
-//import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
