@@ -1,10 +1,10 @@
 package com.example.applimobilefilm
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,27 +19,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.compose.rememberNavController
 import com.example.applimobilefilm.components.BottomBar
+import com.example.applimobilefilm.components.FavorisPage
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
-import java.time.format.TextStyle
 
 class GestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_gestion)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        setContent{
+            FavorisPage()
         }
+//        View(R.layout.activity_gestion)
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
     }
 }
 
@@ -176,7 +176,8 @@ fun MoviePreviewContent(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
                 BottomBar(
                     onHomeClick = onHomeClick,
                     onStarClick = onStarClick,
-                    onInfoClick = { /* Handle Info click */ }
+                    onInfoClick = { /* Handle Info click */ },
+                    navController = rememberNavController()
                 )
             },
             modifier = Modifier.fillMaxSize()

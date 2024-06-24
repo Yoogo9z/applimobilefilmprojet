@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.applimobilefilm.components.BottomBar
 import com.example.applimobilefilm.components.SearchBarWithIcon
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
@@ -52,7 +53,9 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(this@MainActivity, GestionActivity::class.java)
                             startActivity(intent)
                         }, onInfoClick = {
-                        })
+                        },
+                            navController = rememberNavController()
+                            )
                     },
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -61,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     @Composable
     fun MoviePreviewContent() {

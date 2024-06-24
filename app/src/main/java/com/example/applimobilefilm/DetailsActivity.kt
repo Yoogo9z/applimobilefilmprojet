@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,21 +42,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.compose.rememberNavController
 import com.example.applimobilefilm.components.BottomBar
+import com.example.applimobilefilm.components.DetailsPage
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
 
 class DetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_details)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        setContent {
+            DetailsPage()
         }
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
     }
 }
+
 
 @Composable
 fun FilmDetails(modifier: Modifier = Modifier) {
@@ -70,7 +77,7 @@ fun FilmDetails(modifier: Modifier = Modifier) {
                 painter = painter,
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(top = 10.dp, bottom = 10.dp)
+                    .padding(top = 10.dp, bottom = 20.dp)
                     .clip(RoundedCornerShape(14.dp))
                     .align(Alignment.CenterHorizontally),
                 contentScale = ContentScale.Crop
@@ -102,7 +109,8 @@ fun FilmDetails(modifier: Modifier = Modifier) {
                 Row {
                     Text(
                         text = "Note : ",
-                        color = Color.White
+                        color = Color.White,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Icon(
                         imageVector = Icons.Filled.Star,
@@ -192,12 +200,19 @@ fun ButtonBandeAnnonce(context: Context, modifier: Modifier) {
         onClick = {
             val intent = Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://www.youtube.com/watch?v=VIDEO_ID")
+                Uri.parse("https://www.youtube.com/watch?v=ya5mvFdRXi4")
             )
             context.startActivity(intent)
         },
-        modifier = modifier
-    ) {
+        modifier = Modifier
+            .padding(top = 25.dp),
+                colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                    contentColor = Color(0xFF3D1752),
+    ),      elevation = ButtonDefaults.buttonElevation(
+            hoveredElevation = 10.dp, // Elevation when the button is hovered
+        )
+    ){
         Text(text = "Voir la bande annonce")
     }
 }
@@ -217,7 +232,8 @@ fun MoviePreviewDetails(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
                 BottomBar(
                     onHomeClick = onHomeClick,
                     onStarClick = onStarClick,
-                    onInfoClick = { /* Handle Info click */ }
+                    onInfoClick = { /* Handle Info click */ },
+                    navController = rememberNavController()
                 )
             },
             modifier = Modifier.fillMaxSize()

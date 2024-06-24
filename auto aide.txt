@@ -26,6 +26,5 @@ A faire :
 - Lier une api pour recup json de film
 - Ajouter des films aux favoris 
 - Organiser la liste de favoris selon un critère
-- Créer la page détails
 - Naviguer entre les pages avec les boutons
  
