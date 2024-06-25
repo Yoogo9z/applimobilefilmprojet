@@ -1,33 +1,45 @@
-package com.example.applimobilefilm.repository
+import com.example.applimobilefilm.api.MovieApiClient
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okio.IOException
 
-import com.example.applimobilefilm.api.MovieApiService
-import com.example.applimobilefilm.domaine.model.Movie
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class MovieRepository {
+class MovieRepository(private val client: OkHttpClient) {
 
-    private val service: MovieApiService
-
-    init {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://dummyapi.online/api/movies")
-            .addConverterFactory(GsonConverterFactory.create())
+    fun getPopularMovies(apiKey: String): MovieApiClient.MoviesResponse? {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("https://api.example.com/movies?api_key=$apiKey")
             .build()
 
-        service = retrofit.create(MovieApiService::class.java)
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+            val responseBody = response.body?.string()
+            val moviesResponse =
+                Gson().fromJson(responseBody, MovieApiClient.MoviesResponse::class.java)
+            response.close()
+            return moviesResponse
+        }
     }
 
-    suspend fun getPopularMovies(apiKey: String): List<Movie>? {
-        return try {
-            val response = service.getPopularMovies(apiKey)
-            if (response.isSuccessful) {
-                response.body()?.movies
-            } else {
-                null
+    companion object {
+        fun getPopularMovies(apiKey: String): MovieApiClient.MoviesResponse? {
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url("https://dummyapi.online/api/movies")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val responseBody = response.body?.string()
+                val moviesResponse =
+                    Gson().fromJson(responseBody, MovieApiClient.MoviesResponse::class.java)
+                response.close()
+                return moviesResponse
             }
-        } catch (e: Exception) {
-            null
         }
     }
 }

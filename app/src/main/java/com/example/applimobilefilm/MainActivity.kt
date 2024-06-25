@@ -2,113 +2,213 @@ package com.example.applimobilefilm
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.applimobilefilm.api.MovieApiClient
 import com.example.applimobilefilm.components.BottomBar
-import com.example.applimobilefilm.domaine.model.Movie
-import com.example.applimobilefilm.repository.MovieRepository
+import com.example.applimobilefilm.components.SearchBarWithIcon
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
-import com.example.applimobilefilm.viewmodel.MovieViewModel
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.io.IOException
 
-class MainActivity : ComponentActivity() {
 
-    private val movieRepository = MovieRepository()
-    private lateinit var viewModel: MovieViewModel
+class MainActivity : AppCompatActivity() {
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	private lateinit var movieApiClient: MovieApiClient
+//    private val movieRepository = MovieRepository(OkHttpClient())
 
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MovieViewModel::class.java)
 
-        setContent {
-            ApplimobilefilmTheme {
-                val navController = rememberNavController()
-                Scaffold(
-                    bottomBar = {
-                        BottomBar(onHomeClick = {
-                            navController.navigate("home")
-                        }, onStarClick = {
-                            navController.navigate("favoris")
-                        }, onInfoClick = {
-                            navController.navigate("details")
-                        },
-                            navController = navController
-                        )
-                    },
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    NavHost(navController = navController, startDestination = "home") {
-                        composable("home") { MoviePreviewContent(viewModel) }
-                        composable("favoris") { MoviePreviewContentFav({}, {}) }
-                        composable("details") { MoviePreviewD() }
-                    }
-                }
-            }
-        }
-    }
+	@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		val policy = ThreadPolicy.Builder().permitAll().build()
+		StrictMode.setThreadPolicy(policy);
 
-    @Composable
-    fun MoviePreviewContent(viewModel: MovieViewModel = viewModel()) {
-        var movies by remember { mutableStateOf<List<Movie>>(emptyList()) }
-        var errorMessage by remember { mutableStateOf("") }
+		enableEdgeToEdge()
 
-        LaunchedEffect(Unit) {
-            viewModel.fetchMovies("YOUR_API_KEY_HERE")
-        }
+//        movieApiClient = MovieApiClient("https://dummyapi.online/api/movies/")
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (movies.isEmpty() && errorMessage.isEmpty()) {
-                Text(text = "Loading...")
-            } else if (errorMessage.isNotEmpty()) {
-                Text(text = "Error: $errorMessage")
-            } else {
-                MovieListContent(movies = movies)
-            }
-        }
-    }
+		setContent {
+			ApplimobilefilmTheme {
+				val navController = rememberNavController()
+				Scaffold(
+					bottomBar = {
+						BottomBar(onHomeClick = {
+							navController.navigate("home")
+						}, onStarClick = {
+							navController.navigate("favoris")
+						}, onInfoClick = {
+							navController.navigate("details")
+						}, navController = navController
+						)
+					}, modifier = Modifier.fillMaxSize()
+				) {
+					NavHost(navController = navController, startDestination = "home") {
+						composable("home") {
+							MoviePreviewContent()
+						}
+						composable("favoris") {
+							MoviePreviewContentFav({}, {})
+						}
+						composable("details") {
+							MoviePreviewD()
+						}
+					}
+				}
+			}
+		}
+	}
 
-    @Composable
-    fun MovieListContent(movies: List<Movie>) {
-        LazyColumn {
-            items(movies) { movie ->
-                MovieItem(movie = movie)
-            }
-        }
-    }
+	@Composable
+	fun MoviePreviewContent() {
+		val movieSuggestions = listOf(
+			"Titanic",
+			"Avatar",
+			"Inception",
+			"The Dark Knight",
+			"Interstellar",
+			"La La Land",
+			"Pulp Fiction",
+			"Fight Club",
+			"The Matrix"
+		)
 
-    @Composable
-    fun MovieItem(movie: Movie) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = movie.title)
-            Text(text = "Rating: ${movie.vote_average}")
-            Text(text = movie.overview)
-        }
-    }
+		var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
+		var movies by remember { mutableStateOf(emptyList<MovieApiClient.Movie>()) }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun MoviePreview() {
-        MoviePreviewContent()
-    }
+
+		Column(
+			modifier = Modifier.fillMaxSize()
+		) {
+			Button(onClick = {
+				val client = OkHttpClient()
+
+				val request =
+					Request.Builder().url("https://publicobject.com/helloworld.txt").build()
+
+				client.newCall(request).execute().use { response ->
+					if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+					for ((name, value) in response.headers) {
+						println("$name: $value")
+					}
+
+					println(response.body!!.string())
+				}
+			}) {
+				Text("Boutton")
+			}
+			Box(
+				modifier = Modifier
+					.weight(1.5f)
+					.fillMaxHeight()
+					.fillMaxWidth()
+					.background(Color(0xFF511730))
+			) {
+				Column(
+					modifier = Modifier.fillMaxSize()
+				) {
+					SearchBarWithIcon(modifier = Modifier
+						.fillMaxWidth()
+						.weight(1f),
+						suggestions = filteredSuggestions,
+						onSearchTextChanged = { searchText ->
+							filteredSuggestions = movieSuggestions.filter {
+								it.contains(
+									searchText,
+									ignoreCase = true
+								)
+							}
+						})
+					Spacer(modifier = Modifier.weight(0.1f))
+					ListContent(
+						movies = movies, modifier = Modifier.weight(8.9f)
+					)
+				}
+			}
+		}
+	}
+
+	@Composable
+	fun ListContent(movies: List<MovieApiClient.Movie>, modifier: Modifier = Modifier) {
+		Column(
+			modifier = modifier.fillMaxSize()
+		) {
+			Box(
+				Modifier
+					.fillMaxWidth()
+					.weight(1f)
+			) {
+				Column(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(start = 12.dp, end = 12.dp)
+				) {
+					Spacer(modifier = Modifier.height(20.dp))
+					Text(
+						modifier = Modifier
+							.padding(bottom = 20.dp)
+							.align(Alignment.CenterHorizontally),
+						style = androidx.compose.ui.text.TextStyle(fontSize = 24.sp),
+						text = "Films à venir",
+						color = Color(0xFFE0D68A)
+					)
+					Text(
+						text = "Romance", color = Color(0xFFE0D68A)
+					)
+					Row(
+						modifier = Modifier.height(130.dp)
+					) {
+						LazyRow(
+							modifier = Modifier.padding(top = 12.dp)
+						) {
+							items(movies) { movie ->
+								ImageScroll(imageUrl = movie.image, text = String())
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+	@Composable
+	@Preview(showBackground = true)
+	fun MoviePreview() {
+		MoviePreviewContent()
+	}
 }

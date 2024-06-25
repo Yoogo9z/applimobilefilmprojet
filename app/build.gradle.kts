@@ -66,7 +66,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp)
+//    implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.navigation.compose.v253)
     androidTestImplementation(libs.androidx.junit)
@@ -75,9 +75,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation (libs.androidx.navigation.compose.v250alpha01)
+//    implementation (libs.androidx.navigation.compose.v250alpha01)
     implementation (libs.androidx.navigation.runtime.ktx)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
 }
