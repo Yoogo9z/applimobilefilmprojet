@@ -65,7 +65,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
-    implementation(libs.converter.gson)
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
@@ -78,4 +77,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation (libs.androidx.navigation.compose.v250alpha01)
     implementation (libs.androidx.navigation.runtime.ktx)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
 }

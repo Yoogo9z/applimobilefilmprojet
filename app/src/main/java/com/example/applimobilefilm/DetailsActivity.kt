@@ -55,6 +55,24 @@ class DetailsActivity : AppCompatActivity() {
     }
 }
 
+@Composable
+fun Headeur(modifier: Modifier = Modifier) {
+    Row(
+        modifier = Modifier
+            .height(100.dp)
+            .fillMaxWidth()
+            .background(color = Color(0xFF320A28))
+            .padding(start = 12.dp, end = 12.dp),
+    ) {
+        Text(
+            modifier = Modifier
+                .align(Alignment.CenterVertically),
+            style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp),
+            text = "Détails du film",
+            color = Color(0xFFE0D68A)
+        )
+    }
+}
 
 @Composable
 fun FilmDetails(modifier: Modifier = Modifier) {
@@ -171,14 +189,10 @@ fun FilmDetails(modifier: Modifier = Modifier) {
                         .padding(bottom = 8.dp)
                 )
                 Text(
-                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-                            " Quisque non neque at dui efficitur lacinia quis ac leo." +
-                            " Pellentesque habitant morbi tristique senectus et netus " +
-                            "et malesuada fames ac turpis egestas.",
+                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                     color = Color(0xFFE0D68A),
                     textAlign = TextAlign.Justify,
                     modifier = Modifier
-                        .height(125.dp)
                 )
                 ButtonBandeAnnonce(context = context, modifier = Modifier.weight(0.1f))
             }
@@ -244,13 +258,16 @@ fun MoviePreviewDetails(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
                             .fillMaxHeight()
                             .fillMaxWidth()
                     ) {
-                        FilmDetails(modifier = Modifier.weight(0.9f))
+                        Headeur(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.weight(0.3f))
+                        FilmDetails(modifier = Modifier.weight(8.7f))
                     }
+                }
                 }
             }
         }
     }
-}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

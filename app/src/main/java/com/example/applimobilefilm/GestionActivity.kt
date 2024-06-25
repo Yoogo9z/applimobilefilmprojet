@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,16 +18,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.applimobilefilm.components.BottomBar
+import com.example.applimobilefilm.components.SearchBarWithIcon
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
 
 class GestionActivity : AppCompatActivity() {
@@ -60,6 +64,21 @@ fun Favoris(modifier: Modifier) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
+        Row(
+            modifier = Modifier
+                .height(100.dp)
+                .fillMaxWidth()
+                .background(color = Color(0xFF320A28))
+                .padding(start = 12.dp, end = 12.dp),
+        ) {
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically),
+                style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp),
+                text = "Gestion des favoris",
+                color = Color(0xFFE0D68A)
+            )
+        }
         Box(
             Modifier
                 .fillMaxWidth()
@@ -73,7 +92,7 @@ fun Favoris(modifier: Modifier) {
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(top = 20.dp, bottom = 20.dp)
+                        .padding(top = 32.dp, bottom = 20.dp)
                         .align(Alignment.CenterHorizontally),
                     style = androidx.compose.ui.text.TextStyle(fontSize = 24.sp),
                     text = "Mes favoris",
@@ -163,30 +182,30 @@ fun Favoris(modifier: Modifier) {
                         .fillMaxWidth()
                         .background(color = Color.White)
                 )
-                Text(
-                    modifier = Modifier
-                        .padding(top = 20.dp, bottom = 20.dp),
-                    text = "Winter Soldier",
-                    color = Color(0xFFE0D68A)
-                )
-                Spacer(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(color = Color.White)
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(top = 20.dp, bottom = 20.dp),
-                    text = "Taxi 2",
-                    color = Color(0xFFE0D68A)
-                )
-                Spacer(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .fillMaxWidth()
-                        .background(color = Color.White)
-                )
+//                Text(
+//                    modifier = Modifier
+//                        .padding(top = 20.dp, bottom = 20.dp),
+//                    text = "Winter Soldier",
+//                    color = Color(0xFFE0D68A)
+//                )
+//                Spacer(
+//                    modifier = Modifier
+//                        .height(1.dp)
+//                        .fillMaxWidth()
+//                        .background(color = Color.White)
+//                )
+//                Text(
+//                    modifier = Modifier
+//                        .padding(top = 20.dp, bottom = 20.dp),
+//                    text = "Taxi 2",
+//                    color = Color(0xFFE0D68A)
+//                )
+//                Spacer(
+//                    modifier = Modifier
+//                        .height(1.dp)
+//                        .fillMaxWidth()
+//                        .background(color = Color.White)
+//                )
             }
         }
     }
@@ -196,6 +215,14 @@ fun Favoris(modifier: Modifier) {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MoviePreviewContentFav(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
+
+    val movieSuggestions = listOf(
+        "Titanic", "Avatar", "Inception", "The Dark Knight", "Interstellar",
+        "La La Land", "Pulp Fiction", "Fight Club", "The Matrix"
+    )
+
+    var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
+
     val navController = rememberNavController()
     ApplimobilefilmTheme {
         Scaffold(
@@ -204,7 +231,7 @@ fun MoviePreviewContentFav(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
                     navController = rememberNavController(),
                     onHomeClick = onHomeClick,
                     onStarClick = onStarClick,
-                    onInfoClick = {  }
+                    onInfoClick = { }
                 )
             },
             modifier = Modifier.fillMaxSize()
@@ -214,7 +241,8 @@ fun MoviePreviewContentFav(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
                     .fillMaxHeight()
                     .fillMaxWidth()
             ) {
-                Favoris(modifier = Modifier.weight(8.4f))
+//                Spacer(modifier = Modifier.weight(0.1f))
+                Favoris(modifier = Modifier.weight(8.9f))
             }
         }
     }
