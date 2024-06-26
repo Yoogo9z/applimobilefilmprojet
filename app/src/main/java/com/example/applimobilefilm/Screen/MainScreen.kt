@@ -17,32 +17,32 @@ import com.example.applimobilefilm.components.HomePage
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
 
 class MainScreen : AppCompatActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ApplimobilefilmTheme {
-                val navController = rememberNavController()
-                Scaffold(
-                    bottomBar = {
-                        BottomBar(
-                            navController = navController,
-                            onHomeClick = { /*TODO*/ },
-                            onStarClick = { /*TODO*/ },
-                            onInfoClick = { /*TODO*/ }
-                        )
-                    },
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    NavHost(navController = navController, startDestination = "home") {
-                        composable("home") { HomePage(navController, onHomeClick = {}, onStarClick = {}, onInfoClick={}) }
-                        composable("favoris") { FavorisPage() }
-                        composable("details") { DetailsPage() }
-                    }
-                }
-            }
-        }
-    }
+	@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		setContent {
+			ApplimobilefilmTheme {
+				val navController = rememberNavController()
+				Scaffold(
+					bottomBar = {
+						BottomBar(
+							navController = navController,
+							onHomeClick = { /*TODO*/ },
+							onStarClick = { /*TODO*/ },
+							onInfoClick = { /*TODO*/ }
+						)
+					},
+					modifier = Modifier.fillMaxSize()
+				) {
+					NavHost(navController = navController, startDestination = "home") {
+						composable("home") { HomePage(navController, onHomeClick = {}, onStarClick = {}, onInfoClick={}) }
+						composable("favoris") { FavorisPage() }
+						composable("details") { DetailsPage() }
+					}
+				}
+			}
+		}
+	}
 }
 
 

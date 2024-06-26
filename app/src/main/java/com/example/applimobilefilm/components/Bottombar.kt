@@ -21,93 +21,93 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun BottomBar(
-    navController: NavHostController,
-    onHomeClick: () -> Unit,
-    onStarClick: () -> Unit,
-    onInfoClick: () -> Unit,
+	navController: NavHostController,
+	onHomeClick: () -> Unit,
+	onStarClick: () -> Unit,
+	onInfoClick: () -> Unit,
 ) {
-    BottomAppBar(
-        modifier = Modifier.fillMaxWidth(),
-        containerColor = Color(0xFF3D1752)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = {
-                    navController.navigate("home")
-                    onHomeClick()
-                },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(Icons.Filled.Home, contentDescription = "Home Icon", tint = Color(0xFFE0D68A))
-            }
-            IconButton(
-                onClick = {
-                    navController.navigate("favoris")
-                    onStarClick()
-                },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(Icons.Filled.Star, contentDescription = "Star Icon", tint = Color(0xFFE0D68A))
-            }
-            IconButton(
-                onClick = {
-                    navController.navigate("details")
-                    onInfoClick()
-                },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(Icons.Filled.Info, contentDescription = "Info Icon", tint = Color(0xFFE0D68A))
-            }
-        }
-    }
+	BottomAppBar(
+		modifier = Modifier.fillMaxWidth(),
+		containerColor = Color(0xFF3D1752)
+	) {
+		Row(
+			modifier = Modifier.fillMaxSize(),
+			horizontalArrangement = Arrangement.SpaceAround,
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			IconButton(
+				onClick = {
+					navController.navigate("home")
+					onHomeClick()
+				},
+				modifier = Modifier.weight(1f)
+			) {
+				Icon(Icons.Filled.Home, contentDescription = "Home Icon", tint = Color(0xFFE0D68A))
+			}
+			IconButton(
+				onClick = {
+					navController.navigate("favoris")
+					onStarClick()
+				},
+				modifier = Modifier.weight(1f)
+			) {
+				Icon(Icons.Filled.Star, contentDescription = "Star Icon", tint = Color(0xFFE0D68A))
+			}
+			IconButton(
+				onClick = {
+					navController.navigate("details")
+					onInfoClick()
+				},
+				modifier = Modifier.weight(1f)
+			) {
+				Icon(Icons.Filled.Info, contentDescription = "Info Icon", tint = Color(0xFFE0D68A))
+			}
+		}
+	}
 }
 
 
 @Composable
 fun HomePage(
-    navController: NavHostController,
-    onHomeClick: () -> Unit,
-    onStarClick: () -> Unit,
-    onInfoClick: () -> Unit
+	navController: NavHostController,
+	onHomeClick: () -> Unit,
+	onStarClick: () -> Unit,
+	onInfoClick: () -> Unit
 ) {
 
-    // Contenu de la page d'accueil
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF511730))
-    ) {
-        // Ajoutez votre contenu ici
-        BottomBar(navController = navController, onHomeClick = onHomeClick, onStarClick = onStarClick, onInfoClick = onInfoClick)
-    }
+	// Contenu de la page d'accueil
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.background(Color(0xFF511730))
+	) {
+		// Ajoutez votre contenu ici
+		BottomBar(navController = navController, onHomeClick = onHomeClick, onStarClick = onStarClick, onInfoClick = onInfoClick)
+	}
 }
 
 
 @Composable
 fun FavorisPage() {
-    // Contenu de la page des favoris
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF511730))
-    ) {
-        // Ajoutez votre contenu ici
-    }
+	// Contenu de la page des favoris
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.background(Color(0xFF511730))
+	) {
+		// Ajoutez votre contenu ici
+	}
 }
 
 @Composable
 fun DetailsPage() {
-    // Contenu de la page des détails
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF511730))
-    ) {
-        // Ajoutez votre contenu ici
-    }
+	// Contenu de la page des détails
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.background(Color(0xFF511730))
+	) {
+		// Ajoutez votre contenu ici
+	}
 }
 

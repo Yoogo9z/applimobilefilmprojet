@@ -40,10 +40,7 @@ import com.example.applimobilefilm.api.MovieApiClient
 import com.example.applimobilefilm.components.BottomBar
 import com.example.applimobilefilm.components.SearchBarWithIcon
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
-import com.google.gson.Gson
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okio.IOException
 
 class MainActivity : AppCompatActivity() {
 
@@ -127,30 +124,14 @@ class MainActivity : AppCompatActivity() {
 		val moviesList = mutableListOf<MovieApiClient.Movie>()
 
 		movieIds.forEach { movieId ->
-			val request = Request.Builder()
-				.url("https://www.omdbapi.com/?i=$movieId&apikey=$apiKey")
-				.build()
-
-			client.newCall(request).enqueue(object : okhttp3.Callback {
-				override fun onFailure(call: okhttp3.Call, e: IOException) {
-					e.printStackTrace()
-				}
-
-				override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-					response.use {
-						if (!it.isSuccessful) throw IOException("Unexpected code $response")
-
-						val responseBody = it.body!!.string()
-						val movie = Gson().fromJson(responseBody, MovieApiClient.Movie::class.java)
-						runOnUiThread {
-							moviesList.add(movie)
-							if (moviesList.size == movieIds.size) {
-								movies.value = moviesList
-							}
-						}
+			movieApiClient.getMovieDetails(movieId) { movie ->
+				movie?.let {
+					moviesList.add(it)
+					if (moviesList.size == movieIds.size) {
+						movies.value = moviesList
 					}
 				}
-			})
+			}
 		}
 	}
 
@@ -187,15 +168,18 @@ class MainActivity : AppCompatActivity() {
 					.background(Color(0xFF511730))
 			) {
 				Column {
-					ListContent(movies = movies)
+					ListContent(movies = movies, onClick = { {} })
 				}
 			}
 		}
 	}
 
-
 	@Composable
-	fun ListContent(movies: List<MovieApiClient.Movie>, modifier: Modifier = Modifier) {
+	fun ListContent(
+		movies: List<MovieApiClient.Movie>,
+		modifier: Modifier = Modifier,
+		onClick: (MovieApiClient.Movie) -> Unit
+	) {
 		val years = movies.groupBy { it.year }
 		val limitedYears = years.keys.sortedDescending().take(4)
 
@@ -208,7 +192,18 @@ class MainActivity : AppCompatActivity() {
 					if (movies.size >= 6) {
 						movies.take(6)
 					} else {
-						movies + List(6 - movies.size) { MovieApiClient.Movie("", "", "", "", "", "") }
+						movies + List(6 - movies.size) {
+							MovieApiClient.Movie(
+								"",
+								"",
+								"",
+								"",
+								"",
+								"",
+								"",
+								""
+							)
+						}
 					}
 				} ?: emptyList()
 				item {
@@ -233,7 +228,11 @@ class MainActivity : AppCompatActivity() {
 								modifier = Modifier.padding(top = 12.dp)
 							) {
 								items(moviesByYear) { movie ->
-									ImageScroll(imageUrl = movie.image, text = movie.movie)
+									ImageScroll(
+										imageUrl = movie.poster,
+										text = movie.title,
+//										onClick = { onClick(movie) }
+									)
 								}
 							}
 						}
@@ -242,6 +241,7 @@ class MainActivity : AppCompatActivity() {
 			}
 		}
 	}
+
 
 	@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 	@Composable
