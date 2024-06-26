@@ -79,7 +79,7 @@ dependencies {
     implementation (libs.androidx.navigation.runtime.ktx)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("io.coil-kt:coil-compose:2.2.2")
-
+    implementation(libs.okhttp3.okhttp)
+    implementation(libs.coil.compose)
+    implementation(libs.gson)
 }

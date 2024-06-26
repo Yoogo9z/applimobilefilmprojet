@@ -97,7 +97,9 @@ fun SearchBarWithIcon(
 
 
     LazyColumn(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF511730))
     ) {
         items(suggestions) { suggestion ->
             Text(
@@ -113,7 +115,7 @@ fun SearchBarWithIcon(
                     color = Color.White, // Change the color here
                     fontSize = 18.sp,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.sp,
                 ),
                 textAlign = TextAlign.Center // Change the alignment here
             )

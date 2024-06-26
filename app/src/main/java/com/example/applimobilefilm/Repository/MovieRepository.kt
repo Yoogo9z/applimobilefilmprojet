@@ -1,45 +1,26 @@
-import com.example.applimobilefilm.api.MovieApiClient
+package com.example.applimobilefilm.api
+
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
 
+class MovieRepository(private val apiKey: String) {
 
-class MovieRepository(private val client: OkHttpClient) {
+    private val client = OkHttpClient()
+    private val gson = Gson()
 
-    fun getPopularMovies(apiKey: String): MovieApiClient.MoviesResponse? {
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url("https://api.example.com/movies?api_key=$apiKey")
-            .build()
+    fun getMovieByTitle(title: String): MovieApiClient.Movie? {
+        val url = "http://www.omdbapi.com/?t=${title.replace(" ", "+")}&apikey=$apiKey"
+        val request = Request.Builder().url(url).build()
 
-        client.newCall(request).execute().use { response ->
+        return client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
-            val responseBody = response.body?.string()
-            val moviesResponse =
-                Gson().fromJson(responseBody, MovieApiClient.MoviesResponse::class.java)
-            response.close()
-            return moviesResponse
-        }
-    }
-
-    companion object {
-        fun getPopularMovies(apiKey: String): MovieApiClient.MoviesResponse? {
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                .url("https://dummyapi.online/api/movies")
-                .build()
-
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-                val responseBody = response.body?.string()
-                val moviesResponse =
-                    Gson().fromJson(responseBody, MovieApiClient.MoviesResponse::class.java)
-                response.close()
-                return moviesResponse
+            response.body?.string()?.let { json ->
+                return gson.fromJson(json, MovieApiClient.Movie::class.java)
             }
+            return null
         }
     }
 }

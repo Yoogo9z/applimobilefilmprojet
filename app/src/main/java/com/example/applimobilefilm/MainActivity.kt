@@ -17,9 +17,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,26 +40,28 @@ import com.example.applimobilefilm.api.MovieApiClient
 import com.example.applimobilefilm.components.BottomBar
 import com.example.applimobilefilm.components.SearchBarWithIcon
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.io.IOException
-
+import okio.IOException
 
 class MainActivity : AppCompatActivity() {
 
+	private val apiKey = "3fafb9db"
 	private lateinit var movieApiClient: MovieApiClient
-//    private val movieRepository = MovieRepository(OkHttpClient())
-
+	private val movies = mutableStateOf(emptyList<MovieApiClient.Movie>())
 
 	@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		val policy = ThreadPolicy.Builder().permitAll().build()
-		StrictMode.setThreadPolicy(policy);
+		StrictMode.setThreadPolicy(policy)
 
 		enableEdgeToEdge()
 
-//        movieApiClient = MovieApiClient("https://dummyapi.online/api/movies/")
+		movieApiClient = MovieApiClient(apiKey)
+
+		fetchMovies()
 
 		setContent {
 			ApplimobilefilmTheme {
@@ -78,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 				) {
 					NavHost(navController = navController, startDestination = "home") {
 						composable("home") {
-							MoviePreviewContent()
+							MoviePreviewContent(movies = movies.value)
 						}
 						composable("favoris") {
 							MoviePreviewContentFav({}, {})
@@ -92,111 +94,135 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	@Composable
-	fun MoviePreviewContent() {
-		val movieSuggestions = listOf(
-			"Titanic",
-			"Avatar",
-			"Inception",
-			"The Dark Knight",
-			"Interstellar",
-			"La La Land",
-			"Pulp Fiction",
-			"Fight Club",
-			"The Matrix"
+	private fun fetchMovies() {
+		val client = OkHttpClient()
+		val movieIds = listOf(
+			"tt0111161", "tt0068646", "tt0468569", "tt0110912", "tt0109830", "tt1375666",
+			"tt0071562", "tt0137523", "tt0120737", "tt0088763", "tt0167260", "tt0110357",
+			"tt0110413", "tt0108052", "tt0167261", "tt0133093", "tt0114814", "tt0245429",
+			"tt0120815", "tt0112573", "tt0038650", "tt0120586", "tt0120689", "tt0099685"
 		)
 
-		var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
-		var movies by remember { mutableStateOf(emptyList<MovieApiClient.Movie>()) }
+		val moviesList = mutableListOf<MovieApiClient.Movie>()
 
+		movieIds.forEach { movieId ->
+			val request = Request.Builder()
+				.url("https://www.omdbapi.com/?i=$movieId&apikey=$apiKey")
+				.build()
 
-		Column(
-			modifier = Modifier.fillMaxSize()
-		) {
-			Button(onClick = {
-				val client = OkHttpClient()
-
-				val request =
-					Request.Builder().url("https://publicobject.com/helloworld.txt").build()
-
-				client.newCall(request).execute().use { response ->
-					if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-					for ((name, value) in response.headers) {
-						println("$name: $value")
-					}
-
-					println(response.body!!.string())
+			client.newCall(request).enqueue(object : okhttp3.Callback {
+				override fun onFailure(call: okhttp3.Call, e: IOException) {
+					e.printStackTrace()
 				}
-			}) {
-				Text("Boutton")
-			}
-			Box(
-				modifier = Modifier
-					.weight(1.5f)
-					.fillMaxHeight()
-					.fillMaxWidth()
-					.background(Color(0xFF511730))
-			) {
-				Column(
-					modifier = Modifier.fillMaxSize()
-				) {
-					SearchBarWithIcon(modifier = Modifier
-						.fillMaxWidth()
-						.weight(1f),
-						suggestions = filteredSuggestions,
-						onSearchTextChanged = { searchText ->
-							filteredSuggestions = movieSuggestions.filter {
-								it.contains(
-									searchText,
-									ignoreCase = true
-								)
+
+				override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+					response.use {
+						if (!it.isSuccessful) throw IOException("Unexpected code $response")
+
+						val responseBody = it.body!!.string()
+						val movie = Gson().fromJson(responseBody, MovieApiClient.Movie::class.java)
+						runOnUiThread {
+							moviesList.add(movie)
+							if (moviesList.size == movieIds.size) {
+								movies.value = moviesList
 							}
-						})
-					Spacer(modifier = Modifier.weight(0.1f))
-					ListContent(
-						movies = movies, modifier = Modifier.weight(8.9f)
-					)
+						}
+					}
 				}
-			}
+			})
 		}
 	}
 
 	@Composable
-	fun ListContent(movies: List<MovieApiClient.Movie>, modifier: Modifier = Modifier) {
+	fun MoviePreviewContent(movies: List<MovieApiClient.Movie>) {
+		val movieSuggestions = listOf(
+			"Titanic", "Avatar", "Inception", "The Dark Knight", "Interstellar",
+			"La La Land", "Pulp Fiction", "Fight Club", "The Matrix"
+		)
+		var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
+
 		Column(
+			modifier = Modifier.fillMaxSize()
+		) {
+			SearchBarWithIcon(
+				modifier = Modifier
+					.fillMaxWidth()
+					.weight(1f),
+				suggestions = filteredSuggestions,
+				onSearchTextChanged = { searchText ->
+					filteredSuggestions = movieSuggestions.filter {
+						it.contains(
+							searchText,
+							ignoreCase = true
+						)
+					}
+				}
+			)
+			Box(
+				modifier = Modifier
+					.weight(8f)
+					.fillMaxHeight()
+					.fillMaxWidth()
+					.background(Color(0xFF511730))
+			) {
+				ListContent(movies = movies)
+			}
+		}
+	}
+
+//	@Composable
+//	fun MovieList(movies: List<MovieApiClient.Movie>) {
+//		LazyColumn(
+//			modifier = Modifier
+//				.fillMaxWidth()
+//				.background(Color(0xFF511730))
+//		) {
+//			items(movies) { movie ->
+//				ImageScroll(imageUrl = movie.image, text = movie.movie)
+//			}
+//		}
+//	}
+
+	@Composable
+	fun ListContent(movies: List<MovieApiClient.Movie>, modifier: Modifier = Modifier) {
+		val genres = movies.groupBy { it.genre }
+		val limitedGenres = genres.keys.take(3)
+
+		LazyColumn(
 			modifier = modifier.fillMaxSize()
 		) {
-			Box(
-				Modifier
-					.fillMaxWidth()
-					.weight(1f)
-			) {
-				Column(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(start = 12.dp, end = 12.dp)
-				) {
-					Spacer(modifier = Modifier.height(20.dp))
-					Text(
+			limitedGenres.forEach { genre ->
+				val moviesByGenre = genres[genre]?.let { movies ->
+					if (movies.size >= 5) {
+						movies.take(5)
+					} else {
+						movies + List(5 - movies.size) { MovieApiClient.Movie("", "", "", "") }
+					}
+				} ?: emptyList()
+				item {
+					Column(
 						modifier = Modifier
-							.padding(bottom = 20.dp)
-							.align(Alignment.CenterHorizontally),
-						style = androidx.compose.ui.text.TextStyle(fontSize = 24.sp),
-						text = "Films à venir",
-						color = Color(0xFFE0D68A)
-					)
-					Text(
-						text = "Romance", color = Color(0xFFE0D68A)
-					)
-					Row(
-						modifier = Modifier.height(130.dp)
+							.fillMaxWidth()
+							.padding(start = 12.dp, end = 12.dp)
 					) {
-						LazyRow(
-							modifier = Modifier.padding(top = 12.dp)
+						Spacer(modifier = Modifier.height(20.dp))
+						Text(
+							modifier = Modifier
+								.padding(bottom = 20.dp)
+								.align(Alignment.CenterHorizontally),
+							style = androidx.compose.ui.text.TextStyle(fontSize = 24.sp),
+							text = genre,
+							color = Color(0xFFE0D68A)
+						)
+						Row(
+							modifier = Modifier.height(130.dp)
 						) {
-							items(movies) { movie ->
-								ImageScroll(imageUrl = movie.image, text = String())
+							LazyRow(
+								modifier = Modifier.padding(top = 12.dp)
+							) {
+								items(moviesByGenre) { movie ->
+									ImageScroll(imageUrl = movie.image, text = movie.movie)
+								}
 							}
 						}
 					}
@@ -209,6 +235,6 @@ class MainActivity : AppCompatActivity() {
 	@Composable
 	@Preview(showBackground = true)
 	fun MoviePreview() {
-		MoviePreviewContent()
+		MoviePreviewContent(movies = emptyList())
 	}
 }
