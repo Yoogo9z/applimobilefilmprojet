@@ -56,10 +56,10 @@ fun SearchBarWithIcon(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Accueil",
+                    text = "Films du jour",
                     color = Color(0xFFE0D68A)
                 )
-                Spacer(modifier = Modifier.width(100.dp))
+                Spacer(modifier = Modifier.width(60.dp))
                 BasicTextField(
                     value = textState,
                     onValueChange = {

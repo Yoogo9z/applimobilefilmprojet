@@ -15,8 +15,15 @@ class MovieApiClient(private val apiKey: String) {
         @SerializedName("Title") val movie: String,
         @SerializedName("Poster") val image: String,
         @SerializedName("Plot") val overview: String,
-        @SerializedName("Genre") val genre: String
-    )
+        @SerializedName("Genre") val genre: String,
+        @SerializedName("Country") val country: String,
+        @SerializedName("Year") val year: String
+    ) {
+        val response: Any
+            get() {
+                TODO()
+            }
+    }
 
 
     data class MoviesResponse(

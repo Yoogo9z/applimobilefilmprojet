@@ -97,10 +97,31 @@ class MainActivity : AppCompatActivity() {
 	private fun fetchMovies() {
 		val client = OkHttpClient()
 		val movieIds = listOf(
-			"tt0111161", "tt0068646", "tt0468569", "tt0110912", "tt0109830", "tt1375666",
-			"tt0071562", "tt0137523", "tt0120737", "tt0088763", "tt0167260", "tt0110357",
-			"tt0110413", "tt0108052", "tt0167261", "tt0133093", "tt0114814", "tt0245429",
-			"tt0120815", "tt0112573", "tt0038650", "tt0120586", "tt0120689", "tt0099685"
+			"tt4154756", // Infinity war
+			"tt3606756", // Indestructibles 2
+			"tt0804540", // Taxi 4
+			"tt7238392", // Taxi 5
+			"tt4633694", // Spiderman Into the spiderverse
+			"tt0412535", // Brice de Nice
+			"tt1686305", // Asterix et Obélix contre César
+			"tt2395427", // Avengers Ultron
+			"tt1727824", // Bohémian Rhapsody
+			"tt1677720", // Ready Player One
+			"tt1663202", // The Revenant
+			"tt2820852", // Furious 7
+			"tt3076658", // Creed
+			"tt4731504", // Dofus
+			"tt4576612", // Comment c'est loin
+			"tt0382932", // Ratatouille
+			"tt0425112", // Hot Fuzz
+			"tt0758758", // into the Wild
+			"tt0480249", // Je suis une légende
+			"tt0875113", // 99 Francs
+			"tt0372784", // batman Begins
+			"tt0402910", // Chaos
+			"tt0434409", // V pour Vendetta
+			"tt0357277", // Elektra
+			"tt0120667", // Les 4 fantastiques
 		)
 
 		val moviesList = mutableListOf<MovieApiClient.Movie>()
@@ -160,43 +181,34 @@ class MainActivity : AppCompatActivity() {
 			)
 			Box(
 				modifier = Modifier
-					.weight(8f)
+					.weight(9f)
 					.fillMaxHeight()
 					.fillMaxWidth()
 					.background(Color(0xFF511730))
 			) {
-				ListContent(movies = movies)
+				Column {
+					ListContent(movies = movies)
+				}
 			}
 		}
 	}
 
-//	@Composable
-//	fun MovieList(movies: List<MovieApiClient.Movie>) {
-//		LazyColumn(
-//			modifier = Modifier
-//				.fillMaxWidth()
-//				.background(Color(0xFF511730))
-//		) {
-//			items(movies) { movie ->
-//				ImageScroll(imageUrl = movie.image, text = movie.movie)
-//			}
-//		}
-//	}
 
 	@Composable
 	fun ListContent(movies: List<MovieApiClient.Movie>, modifier: Modifier = Modifier) {
-		val genres = movies.groupBy { it.genre }
-		val limitedGenres = genres.keys.take(3)
+		val years = movies.groupBy { it.year }
+		val limitedYears = years.keys.sortedDescending().take(4)
 
 		LazyColumn(
 			modifier = modifier.fillMaxSize()
 		) {
-			limitedGenres.forEach { genre ->
-				val moviesByGenre = genres[genre]?.let { movies ->
-					if (movies.size >= 5) {
-						movies.take(5)
+			limitedYears.forEach { year ->
+				val moviesByYear = years[year]?.let { movies ->
+					println("$year has ${movies.size} movies")
+					if (movies.size >= 6) {
+						movies.take(6)
 					} else {
-						movies + List(5 - movies.size) { MovieApiClient.Movie("", "", "", "") }
+						movies + List(6 - movies.size) { MovieApiClient.Movie("", "", "", "", "", "") }
 					}
 				} ?: emptyList()
 				item {
@@ -209,9 +221,9 @@ class MainActivity : AppCompatActivity() {
 						Text(
 							modifier = Modifier
 								.padding(bottom = 20.dp)
-								.align(Alignment.CenterHorizontally),
-							style = androidx.compose.ui.text.TextStyle(fontSize = 24.sp),
-							text = genre,
+								.align(Alignment.Start),
+							style = androidx.compose.ui.text.TextStyle(fontSize = 20.sp),
+							text = year,
 							color = Color(0xFFE0D68A)
 						)
 						Row(
@@ -220,7 +232,7 @@ class MainActivity : AppCompatActivity() {
 							LazyRow(
 								modifier = Modifier.padding(top = 12.dp)
 							) {
-								items(moviesByGenre) { movie ->
+								items(moviesByYear) { movie ->
 									ImageScroll(imageUrl = movie.image, text = movie.movie)
 								}
 							}
