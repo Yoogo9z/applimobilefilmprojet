@@ -46,232 +46,227 @@ import com.example.applimobilefilm.components.DetailsPage
 import com.example.applimobilefilm.ui.theme.ApplimobilefilmTheme
 
 class DetailsActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            DetailsPage()
-        }
-    }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		enableEdgeToEdge()
+		setContent {
+			DetailsPage()
+		}
+	}
 }
 
 @Composable
 fun Headeur(modifier: Modifier = Modifier) {
-    Row(
-        modifier = Modifier
-            .height(100.dp)
-            .fillMaxWidth()
-            .background(color = Color(0xFF320A28))
-            .padding(start = 12.dp, end = 12.dp),
-    ) {
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterVertically),
-            style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp),
-            text = "Détails du film",
-            color = Color(0xFFE0D68A)
-        )
-    }
+	Row(
+		modifier = Modifier
+			.height(100.dp)
+			.fillMaxWidth()
+			.background(color = Color(0xFF320A28))
+			.padding(start = 12.dp, end = 12.dp),
+	) {
+		Text(
+			modifier = Modifier
+				.align(Alignment.CenterVertically),
+			style = androidx.compose.ui.text.TextStyle(fontSize = 18.sp),
+			text = "Détails du film",
+			color = Color(0xFFE0D68A)
+		)
+	}
 }
 
 @Composable
 fun FilmDetails(modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        Column {
-            val painter =
-                painterResource(id = R.drawable.image1)
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(top = 10.dp, bottom = 20.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .align(Alignment.CenterHorizontally),
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                text = "TITANIC",
-                color = Color(0xFFE0D68A),
-                style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Medium)
-            )
-            Spacer(modifier = Modifier.height(30.dp))
-            Column(
-                modifier = Modifier
-                    .padding(start = 10.dp, end = 10.dp)
-            )
-            {
-                Row(modifier = Modifier.padding(bottom = 8.dp))
-                {
-                    Text(
-                        text = "Genre : ",
-                        color = Color.White
-                    )
-                    Text(
-                        text = "Thriller",
-                        color = Color(0xFFE0D68A)
-                    )
-                }
-                Row {
-                    Text(
-                        text = "Note : ",
-                        color = Color.White,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "Star icon",
-                        tint = Color.Yellow
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "Star icon",
-                        tint = Color.Yellow
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "Star icon",
-                        tint = Color.Yellow
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "Star icon",
-                        tint = Color.Yellow
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "Star icon",
-                        tint = Color.Yellow
-                    )
-                }
-                Row(modifier = Modifier.padding(bottom = 8.dp))
-                {
-                    Text(
-                        text = "Réalisateur : ",
-                        color = Color.White
-                    )
-                    Text(
-                        text = "Christopher Nolan",
-                        color = Color(0xFFE0D68A)
-                    )
-                }
-                Row(modifier = Modifier.padding(bottom = 8.dp))
-                {
-                    Text(
-                        text = "Durée : ",
-                        color = Color.White
-                    )
-                    Text(
-                        text = "2h45",
-                        color = Color(0xFFE0D68A)
-                    )
-                }
-                Row(modifier = Modifier.padding(bottom = 8.dp))
-                {
-                    Text(
-                        text = "Date de sortie : ",
-                        color = Color.White
-                    )
-                    Text(
-                        text = "21/06/2024",
-                        color = Color(0xFFE0D68A)
-                    )
-                }
-                Text(
-                    text = "Synopsis : ",
-                    color = Color.White,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
-                )
-                Text(
-                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    color = Color(0xFFE0D68A),
-                    textAlign = TextAlign.Justify,
-                    modifier = Modifier
-                )
-                ButtonBandeAnnonce(context = context, modifier = Modifier.weight(0.1f))
-            }
+	val context = LocalContext.current
+	Box(
+		modifier = modifier
+			.fillMaxSize()
+	) {
+		Column {
+			val painter =
+				painterResource(id = R.drawable.image1)
+			Image(
+				painter = painter,
+				contentDescription = null,
+				modifier = Modifier
+					.padding(top = 10.dp, bottom = 20.dp)
+					.clip(RoundedCornerShape(14.dp))
+					.align(Alignment.CenterHorizontally),
+				contentScale = ContentScale.Crop
+			)
+			Text(
+				modifier = Modifier
+					.align(Alignment.CenterHorizontally),
+				text = "STAR WARS",
+				color = Color(0xFFE0D68A),
+				style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Medium)
+			)
+			Spacer(modifier = Modifier.height(30.dp))
+			Column(
+				modifier = Modifier
+					.padding(start = 10.dp, end = 10.dp)
+			)
+			{
+				Row(modifier = Modifier.padding(bottom = 8.dp))
+				{
+					Text(
+						text = "Genre : ",
+						color = Color.White
+					)
+					Text(
+						text = "Science-Fiction",
+						color = Color(0xFFE0D68A)
+					)
+				}
+				Row {
+					Text(
+						text = "Note : ",
+						color = Color.White,
+						modifier = Modifier.padding(bottom = 8.dp)
+					)
+					Icon(
+						imageVector = Icons.Filled.Star,
+						contentDescription = "Star icon",
+						tint = Color.Yellow
+					)
+					Icon(
+						imageVector = Icons.Filled.Star,
+						contentDescription = "Star icon",
+						tint = Color.Yellow
+					)
+					Icon(
+						imageVector = Icons.Filled.Star,
+						contentDescription = "Star icon",
+						tint = Color.Yellow
+					)
+					Icon(
+						imageVector = Icons.Filled.Star,
+						contentDescription = "Star icon",
+						tint = Color.Yellow
+					)
+				}
+				Row(modifier = Modifier.padding(bottom = 8.dp))
+				{
+					Text(
+						text = "Réalisateur : ",
+						color = Color.White
+					)
+					Text(
+						text = "Georges Lucas",
+						color = Color(0xFFE0D68A)
+					)
+				}
+				Row(modifier = Modifier.padding(bottom = 8.dp))
+				{
+					Text(
+						text = "Durée : ",
+						color = Color.White
+					)
+					Text(
+						text = "2h45",
+						color = Color(0xFFE0D68A)
+					)
+				}
+				Row(modifier = Modifier.padding(bottom = 8.dp))
+				{
+					Text(
+						text = "Date de sortie : ",
+						color = Color.White
+					)
+					Text(
+						text = "12/12/2012",
+						color = Color(0xFFE0D68A)
+					)
+				}
+				Text(
+					text = "Synopsis : ",
+					color = Color.White,
+					modifier = Modifier
+						.padding(bottom = 8.dp)
+				)
+				Text(
+					text = "C'est des gens qui se battent avec un baton lumineux qui est très solide et peut même découper des trucs. J'ai jamais vu mais apparemment c'est un classique du cinéma",
+					color = Color(0xFFE0D68A),
+					textAlign = TextAlign.Justify,
+					modifier = Modifier
+				)
+				ButtonBandeAnnonce(context = context, modifier = Modifier.weight(0.1f))
+			}
 
-        }
-    }
+		}
+	}
 }
 
 @Composable
 fun ButtonBandeAnnonce(context: Context, modifier: Modifier) {
-    Button(
-        onClick = {
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://www.youtube.com/watch?v=ya5mvFdRXi4")
-            )
-            context.startActivity(intent)
-        },
-        modifier = Modifier
-            .padding(top = 25.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = Color(0xFF3D1752),
-        ), elevation = ButtonDefaults.buttonElevation(
-            hoveredElevation = 10.dp, // Elevation when the button is hovered
-        )
-    ) {
-        Text(text = "Voir la bande annonce")
-    }
+	Button(
+		onClick = {
+			val intent = Intent(
+				Intent.ACTION_VIEW,
+				Uri.parse("https://www.youtube.com/watch?v=pHgwf2eMFnA")
+			)
+			context.startActivity(intent)
+		},
+		modifier = Modifier
+			.padding(top = 25.dp),
+		colors = ButtonDefaults.buttonColors(
+			containerColor = Color.White,
+			contentColor = Color(0xFF3D1752),
+		), elevation = ButtonDefaults.buttonElevation(
+			hoveredElevation = 10.dp, // Elevation when the button is hovered
+		)
+	) {
+		Text(text = "Voir la bande annonce")
+	}
 }
 
 @Composable
 fun MyComposableFunction() {
-    val context = LocalContext.current
-    ButtonBandeAnnonce(context = context, modifier = Modifier.padding(16.dp))
+	val context = LocalContext.current
+	ButtonBandeAnnonce(context = context, modifier = Modifier.padding(16.dp))
 }
 
 @Composable
 fun MoviePreviewDetails(onHomeClick: () -> Unit, onStarClick: () -> Unit) {
-    val context = LocalContext.current
-    ApplimobilefilmTheme {
-        Scaffold(
-            bottomBar = {
-                BottomBar(
-                    onHomeClick = onHomeClick,
-                    onStarClick = onStarClick,
-                    onInfoClick = { /* Handle Info click */ },
-                    navController = rememberNavController()
-                )
-            },
-            modifier = Modifier.fillMaxSize()
-        ) { innerPadding ->
-            Column(
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFF511730))
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth()
-                    ) {
-                        Headeur(modifier = Modifier.weight(1f))
-                        Spacer(modifier = Modifier.weight(0.3f))
-                        FilmDetails(modifier = Modifier.weight(8.7f))
-                    }
-                }
-                }
-            }
-        }
-    }
+	val context = LocalContext.current
+	ApplimobilefilmTheme {
+		Scaffold(
+			bottomBar = {
+				BottomBar(
+					onHomeClick = onHomeClick,
+					onStarClick = onStarClick,
+					onInfoClick = { /* Handle Info click */ },
+					navController = rememberNavController()
+				)
+			},
+			modifier = Modifier.fillMaxSize()
+		) { innerPadding ->
+			Column(
+				modifier = Modifier.padding(innerPadding)
+			) {
+				Box(
+					modifier = Modifier
+						.fillMaxWidth()
+						.background(Color(0xFF511730))
+				) {
+					Column(
+						modifier = Modifier
+							.fillMaxHeight()
+							.fillMaxWidth()
+					) {
+						Headeur(modifier = Modifier.weight(1f))
+						Spacer(modifier = Modifier.weight(0.3f))
+						FilmDetails(modifier = Modifier.weight(8.7f))
+					}
+				}
+			}
+		}
+	}
+}
 
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MoviePreviewD() {
-    MoviePreviewDetails(onHomeClick = { /*TODO*/ }) {
-    }
+	MoviePreviewDetails(onHomeClick = { /*TODO*/ }) {
+	}
 }

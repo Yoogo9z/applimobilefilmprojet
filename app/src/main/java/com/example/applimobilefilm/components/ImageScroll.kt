@@ -25,52 +25,52 @@ import coil.request.ImageRequest
 
 @Composable
 fun ImageScroll(imageUrl: String, text: String) {
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .crossfade(true)
-            .build()
-    )
+	val painter = rememberAsyncImagePainter(
+		model = ImageRequest.Builder(LocalContext.current)
+			.data(imageUrl)
+			.crossfade(true)
+			.build()
+	)
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = painter,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(end = 8.dp)
-                .width(130.dp)
-                .clip(RoundedCornerShape(14.dp)),
-            contentScale = ContentScale.Crop
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(
-                modifier = Modifier
-                    .weight(8f)
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(2f)
-                    .clip(RoundedCornerShape(bottomStart = 14.dp, bottomEnd = 14.dp))
-                    .background(Color.Black.copy(alpha = 0.6f))
-                    .width(130.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = text,
-                    color = Color.White,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                )
-            }
-        }
-    }
+	Box(
+		modifier = Modifier.fillMaxSize()
+	) {
+		Image(
+			painter = painter,
+			contentDescription = null,
+			modifier = Modifier
+				.fillMaxSize()
+				.padding(end = 8.dp)
+				.width(130.dp)
+				.clip(RoundedCornerShape(14.dp)),
+			contentScale = ContentScale.Crop
+		)
+		Column(
+			modifier = Modifier
+				.fillMaxSize(),
+			verticalArrangement = Arrangement.Bottom,
+			horizontalAlignment = Alignment.CenterHorizontally
+		) {
+			Spacer(
+				modifier = Modifier
+					.weight(8f)
+			)
+			Box(
+				modifier = Modifier
+					.fillMaxWidth()
+					.weight(2f)
+					.clip(RoundedCornerShape(bottomStart = 14.dp, bottomEnd = 14.dp))
+					.background(Color.Black.copy(alpha = 0.6f))
+					.width(130.dp),
+				contentAlignment = Alignment.Center
+			) {
+				Text(
+					text = text,
+					color = Color.White,
+					modifier = Modifier
+						.align(Alignment.Center)
+				)
+			}
+		}
+	}
 }
